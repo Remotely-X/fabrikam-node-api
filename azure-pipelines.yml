@@ -1,0 +1,22 @@
+trigger: none
+
+stages:
+- stage: Deploy
+  displayName: Deploy to Linux VM
+  jobs:
+  - deployment: DeployToVM
+    displayName: Deploy app to app-vm
+    environment:
+      name: linux-targets
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+
+          - script: |
+              chmod +x install-prerequisites.sh deployapp.sh deployscript.sh || true
+              sudo bash ./install-prerequisites.sh
+              sudo bash ./deployapp.sh
+            displayName: Install prerequisites and deploy app
