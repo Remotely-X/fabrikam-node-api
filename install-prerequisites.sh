@@ -1,1 +1,19 @@
-echo "Starting prerequisites installation script run" && sudo apt-get update && curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - && sudo apt-get install -y nodejs && sudo ln -sf /usr/bin/nodejs /usr/bin/node && sudo apt-get install -y nginx && sudo rm -f /etc/nginx/sites-enabled/default && sudo cp node-app-nginx-config /etc/nginx/sites-available/ && sudo ln -sf /etc/nginx/sites-available/node-app-nginx-config /etc/nginx/sites-enabled/node-app-nginx-config && sudo service nginx restart && sudo npm install -g pm2 && sudo pm2 save && echo "End of script run"
+#!/usr/bin/env bash
+set -e
+
+echo "Installing pre-requisites"
+
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg nginx
+
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+sudo npm install -g pm2
+
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+node -v
+npm -v
+pm2 -v
