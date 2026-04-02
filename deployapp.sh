@@ -1,1 +1,11 @@
-echo "Starting deployment script run" && sudo npm install && sudo pm2 start -f app.js && sudo pm2 startup systemd &&  echo "End of script run"
+#!/usr/bin/env bash
+set -e
+
+echo "Starting deployment script run"
+
+npm install
+pm2 delete app || true
+pm2 start ./bin/www --name app
+pm2 save
+
+echo "End of script run"
